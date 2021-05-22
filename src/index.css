@@ -1,5 +1,11 @@
 #root {
   min-height: 100vh;
   display: flex;
-  flex-direction: column; 
+  padding: 10px 0;
+}
+
+.flex {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }

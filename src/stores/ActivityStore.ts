@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction } from 'mobx';
+import { computed, observable, reaction } from 'mobx';
 import { Comparer, Dictionary, IdSelector, selectIdValue } from '../shared';
 
 export interface EntityState<T> {
@@ -38,7 +38,6 @@ export abstract class DataActivityStore<T> extends ActivityStore implements Enti
 		return this.ids.length;
 	}	
 	
-	@action
 	protected addOneMutably(entity: T) {
 		const key = selectIdValue(entity, this.selectId);
 
@@ -50,13 +49,23 @@ export abstract class DataActivityStore<T> extends ActivityStore implements Enti
 		this.entities[key] = entity;
 	}
 	
-	@action
 	protected setManyMutably(entities: T[]) {
 		this.ids = [];
 		this.entities = {};
 		for (const entity of entities) {
 			this.addOneMutably(entity);
 		}
+	}
+
+	protected removeOneMutably(entity: T) {
+		const key = selectIdValue(entity, this.selectId);
+
+		if (key in this.entities === false) {
+			return;
+		}
+
+		delete this.entities[key];
+		this.ids = this.ids.filter(id => id in this.entities);
 	}
 	
 	protected updateOneMutably(updated: T) {

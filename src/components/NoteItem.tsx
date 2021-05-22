@@ -8,11 +8,17 @@ interface NoteItemProps {
 	note: INote;
 }
 
+const dragStart = (e: React.DragEvent<HTMLDivElement>, note: INote) => {
+	e.dataTransfer.setData('text/plain', note.noteId);
+}
+
 const NoteItem: FC<NoteItemProps> = (props) => {
 	const  { note } = props;
-	console.log(note);
 	return (
-        <div className="note-item" draggable="true">{note.noteText}</div>
+        <div className="note-item" draggable="true" 
+			onDragStart={ e => dragStart(e, note) }>
+			{note.noteText}
+		</div>
 	); 
 }
 

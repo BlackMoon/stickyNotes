@@ -14,8 +14,22 @@ class NoteStore extends DataActivityStore<INote> {
 	constructor() {
 		super();
 		
+		this.addNote = this.addNote.bind(this);
 		this.loadNotes = this.loadNotes.bind(this);
+		this.removeNote = this.removeNote.bind(this);
+		this.updateNote = this.updateNote.bind(this);
 	}
+
+	addNote = flow(function* (this: NoteStore, note: INote) {
+		this.loading = true;
+		try {
+			yield noteService.add(note);
+			this.addOneMutably(note);
+		} catch (ex) {
+			this.error = ex;
+		}
+		this.loading = false;
+	});
 	
 	loadNotes = flow(function* (this: NoteStore) {
 		if (this.dataLoaded) {
@@ -32,6 +46,28 @@ class NoteStore extends DataActivityStore<INote> {
 			this.error = ex;
 		}
 
+		this.loading = false;
+	});
+
+	removeNote = flow(function* (this: NoteStore, note: INote) {
+		this.loading = true;
+		try {
+			yield noteService.delete(note);
+			this.removeOneMutably(note);
+		} catch (ex) {
+			this.error = ex;
+		}
+		this.loading = false;
+	});
+
+	updateNote = flow(function* (this: NoteStore, note: INote) {
+		this.loading = true;
+		try {
+			yield noteService.update(note);
+			this.updateOneMutably(note);
+		} catch (ex) {
+			this.error = ex;
+		}
 		this.loading = false;
 	});
 }

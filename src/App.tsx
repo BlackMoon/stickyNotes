@@ -5,10 +5,10 @@ import RemoveNoteArea from "./components/RemoveNoteArea";
 
 const App = () => {
   return (
-    <>
+    <div className="container flex">
       <NoteList />
       <RemoveNoteArea />
-    </>
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import NoteStore from '../stores/NoteStore';
 import { NoteItem } from "./NoteItem";
 
-import "./NoteLIst.css";
+import "./NoteList.css";
 
 const NoteList = () => {
 	const noteStore = useContext(NoteStore);
@@ -15,7 +15,7 @@ const NoteList = () => {
 	});
 
 	return (
-		<div className="container">
+		<div className="note-list">
 		{allEntities.map(n => <NoteItem key={n.noteId} note={n}></NoteItem>)}
 		</div>
 	);

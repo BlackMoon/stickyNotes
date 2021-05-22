@@ -1,3 +1,4 @@
-.container {
+.note-list{
     display: flex;
+    flex: 1;
 }
