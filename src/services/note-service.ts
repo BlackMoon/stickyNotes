@@ -15,7 +15,7 @@ export class NoteService {
 
 
 const initialNotes: INote[] = [
-    { noteId: idGenerator(), noteText: '1' },
-    { noteId: idGenerator(), noteText: '2' },
-    { noteId: idGenerator(), noteText: '3' },
+    { noteId: idGenerator(), noteText: 'note 1' },
+    { noteId: idGenerator(), noteText: 'note 2' },
+    { noteId: idGenerator(), noteText: 'note 3' },
 ];

@@ -12,7 +12,7 @@ const NoteItem: FC<NoteItemProps> = (props) => {
 	const  { note } = props;
 	console.log(note);
 	return (
-        <div className="note-item">{note.noteText}</div>
+        <div className="note-item" draggable="true">{note.noteText}</div>
 	); 
 }
 

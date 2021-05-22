@@ -33,15 +33,6 @@ class NoteStore extends DataActivityStore<INote> {
 		}
 
 		this.loading = false;
-
-		// const p = new Promise((resolve, reject) => {
-		// 	setTimeout(() => {  
-		// 	  this.notes = [{ noteId: idGenerator()  }];
-		// 	  resolve(this.notes);
-		// 	}, 5000)
-		//   });
-	  
-		//   return yield p;
 	});
 }
 
