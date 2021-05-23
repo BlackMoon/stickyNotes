@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FC } from "react";
 
 import { INote } from "../models";
@@ -16,29 +16,39 @@ const dragStart = (e: React.DragEvent<HTMLDivElement>, note: INote) => {
 
 const NoteItem: FC<NoteItemProps> = (props) => {
 	const  { note } = props;
-
-	const noteStore = useContext(NoteStore);
-	const { editMode, setEditMode, updateNote } = noteStore;
 	
+	const noteStore = useContext(NoteStore);
+	const { dragging, setDragging, updateNote } = noteStore;
+
+	const [modified, setModified] = useState(false);
+
 	return (
         <div className="note-item" 
-			contentEditable={editMode} 
+			contentEditable={!dragging} 
 			draggable="true" 
 			suppressContentEditableWarning={true}
 			onBlur={
 				e => { 
-					const noteText = e.target.innerText;
-					updateNote({...note, noteText});
+					if (modified) {
+						const noteText = e.target.innerText;
+						updateNote({...note, noteText});
+						setModified(false);
+					}
 				}
 			}
+			onInput={e => setModified(true)}
 			onDragStart={ 
 				e => {
 					dragStart(e, note);
-					const noteText = (e.target as any).innerText;
-					updateNote({...note, noteText});
+					setDragging(true);
+					if (modified) {
+						const noteText = (e.target as any).innerText;
+						updateNote({...note, noteText});
+						setModified(false);
+					}
 				} 
 			}
-			onDoubleClick={e => setEditMode(true)}
+			onDragEnd={e => setDragging(false)}			
 			>
 			{note.noteText}
 		</div>

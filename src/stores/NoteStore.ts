@@ -9,9 +9,9 @@ import { DataActivityStore } from './ActivityStore';
 
 class NoteStore extends DataActivityStore<INote> {
 	
-	@observable editMode: boolean = false;
-
 	selectId = (n: INote) => n.noteId;
+
+	@observable dragging: boolean = false;
 
 	constructor() {
 		super();
@@ -19,8 +19,8 @@ class NoteStore extends DataActivityStore<INote> {
 		this.addNote = this.addNote.bind(this);
 		this.loadNotes = this.loadNotes.bind(this);
 		this.removeNote = this.removeNote.bind(this);
-		this.setEditMode = this.setEditMode.bind(this);
 		this.updateNote = this.updateNote.bind(this);
+		this.setDragging = this.setDragging.bind(this);
 	}
 
 	addNote = flow(function* (this: NoteStore, note?: INote) {
@@ -72,12 +72,11 @@ class NoteStore extends DataActivityStore<INote> {
 			this.error = ex;
 		}
 		this.loading = false;
-		this.editMode = false;
 	});
 
 	@action
-	setEditMode(editMode: boolean) {
-		this.editMode = editMode;
+	setDragging = (dragging: boolean) => {
+		this.dragging = dragging;
 	}
 }
 
