@@ -1,4 +1,10 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+}
+
 .note-list{
     display: flex;
     flex: 1;
+    flex-wrap: wrap;
 }

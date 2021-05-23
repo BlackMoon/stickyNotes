@@ -17,11 +17,11 @@ const dragLeave = (e: any) => {
     e.target.classList.remove('drag-enter');
 }
 
-const drop = (e: React.DragEvent<HTMLDivElement>, removeNote: (note: INote) => Promise<void>) => {
+const drop = async (e: React.DragEvent<HTMLDivElement>, removeNote: (note: INote) => Promise<void>) => {
     const noteId = e.dataTransfer.getData('text');
     const res = window.confirm("Do you really want to delete note?");
     if (res === true) {
-        removeNote({ noteId });
+        await removeNote({ noteId });
     }
     e.dataTransfer.clearData();
 }
@@ -34,7 +34,7 @@ const RemoveNoteArea = () => {
             onDragOver={dragOver} 
             onDragLeave={dragLeave}
             onDrop={e => drop(e, removeNote)}>
-            Drop note here to remove
+            <a href="#/" className="link-info">Drop note here to remove</a>
         </div>
     );
 }

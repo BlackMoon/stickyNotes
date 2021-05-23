@@ -1,4 +1,4 @@
-import { flow } from 'mobx';
+import { action, flow, observable } from 'mobx';
 import { createContext } from 'react';
 
 import { INote } from '../models';
@@ -9,6 +9,8 @@ import { DataActivityStore } from './ActivityStore';
 
 class NoteStore extends DataActivityStore<INote> {
 	
+	@observable editMode: boolean = false;
+
 	selectId = (n: INote) => n.noteId;
 
 	constructor() {
@@ -17,14 +19,15 @@ class NoteStore extends DataActivityStore<INote> {
 		this.addNote = this.addNote.bind(this);
 		this.loadNotes = this.loadNotes.bind(this);
 		this.removeNote = this.removeNote.bind(this);
+		this.setEditMode = this.setEditMode.bind(this);
 		this.updateNote = this.updateNote.bind(this);
 	}
 
-	addNote = flow(function* (this: NoteStore, note: INote) {
+	addNote = flow(function* (this: NoteStore, note?: INote) {
 		this.loading = true;
 		try {
-			yield noteService.add(note);
-			this.addOneMutably(note);
+			const noteId = yield noteService.add({...note, noteId: ''});
+			this.addOneMutably({...note, noteId});
 		} catch (ex) {
 			this.error = ex;
 		}
@@ -69,7 +72,13 @@ class NoteStore extends DataActivityStore<INote> {
 			this.error = ex;
 		}
 		this.loading = false;
+		this.editMode = false;
 	});
+
+	@action
+	setEditMode(editMode: boolean) {
+		this.editMode = editMode;
+	}
 }
 
 export default createContext(new NoteStore());

@@ -12,14 +12,15 @@ const initialNotes: INote[] = [
 /**API emulator */
 export class NoteService {
 
-  async add(note: INote): Promise<void> {
+  async add(note: INote): Promise<string> {
     return new Promise((resolve, reject) => {
 
-      setTimeout(() => {   
+      setTimeout(() => {  
+        const noteId = idGenerator(); 
         const notes = this.loadNotesFromStore() ?? [];
-        notes.push(note);
+        notes.push({ ...note, noteId });
         this.saveNotesToStore(notes);
-        resolve();
+        resolve(noteId);
       }, DELAY_TIMEOUT)
 
     });
