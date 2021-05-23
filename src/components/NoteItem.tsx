@@ -89,7 +89,11 @@ const NoteItem: FC<NoteItemProps> = (props) => {
 					const target: any = e.target;
 					const x = e.clientX - parentLeft;	
 					const y = e.clientY - parentTop;
-					const z = Math.max(target.style.zIndex + 1, draggedEl.style.zIndex + 1);			
+
+					let z = target.style.zIndex + 1; 
+					if (draggedEl.style.zIndex > z) {
+						z = draggedEl.style.zIndex;
+					};			
 					
 					target.classList.remove('drag-enter')
 					const noteId = e.dataTransfer.getData('text');

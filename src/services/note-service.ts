@@ -4,9 +4,9 @@ const DELAY_TIMEOUT = 500;
 const NOTES_KEY = 'notes'
 
 const initialNotes: INote[] = [
-  { noteId: idGenerator(), noteText: 'note 1' },
-  { noteId: idGenerator(), noteText: 'note 2' },
-  { noteId: idGenerator(), noteText: 'note 3' },
+  { noteId: idGenerator(), noteText: 'note 1', x: 100, y: 100 },
+  { noteId: idGenerator(), noteText: 'note 2', x: 340, y : 100},
+  { noteId: idGenerator(), noteText: 'note 3', x: 100, y: 340 },
 ];
 
 /**API emulator */
