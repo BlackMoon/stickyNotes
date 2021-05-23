@@ -11,7 +11,9 @@ class NoteStore extends DataActivityStore<INote> {
 	
 	selectId = (n: INote) => n.noteId;
 
+	@observable draggedEl: any;
 	@observable dragging: boolean = false;
+	@observable dropped: boolean = false;
 
 	constructor() {
 		super();
@@ -20,7 +22,9 @@ class NoteStore extends DataActivityStore<INote> {
 		this.loadNotes = this.loadNotes.bind(this);
 		this.removeNote = this.removeNote.bind(this);
 		this.updateNote = this.updateNote.bind(this);
+
 		this.setDragging = this.setDragging.bind(this);
+		this.setDropped = this.setDropped.bind(this);
 	}
 
 	addNote = flow(function* (this: NoteStore, note?: INote) {
@@ -75,8 +79,17 @@ class NoteStore extends DataActivityStore<INote> {
 	});
 
 	@action
-	setDragging = (dragging: boolean) => {
+	setDragging = (dragging: boolean, draggedEl?: any) => {
+		this.draggedEl = draggedEl;
 		this.dragging = dragging;
+		if (dragging) {
+			this.dropped = false;
+		}
+	}
+
+	@action
+	setDropped = (dropped: boolean) => {
+		this.dropped = dropped;
 	}
 }
 

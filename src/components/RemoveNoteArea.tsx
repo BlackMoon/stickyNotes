@@ -28,12 +28,17 @@ const drop = async (e: React.DragEvent<HTMLDivElement>, removeNote: (note: INote
 
 const RemoveNoteArea = () => {
     const noteStore = useContext(NoteStore);
-	const { removeNote } = noteStore;
+	const { removeNote, setDropped } = noteStore;
     return (
         <div className="remove-area" 
             onDragOver={dragOver} 
             onDragLeave={dragLeave}
-            onDrop={e => drop(e, removeNote)}>
+            onDrop={e => 
+                {
+                    setDropped(true);
+                    drop(e, removeNote)
+                }
+            }>
             <a href="#/" className="link-info">Drop note here to remove</a>
         </div>
     );

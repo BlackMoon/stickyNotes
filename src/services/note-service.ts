@@ -66,7 +66,7 @@ export class NoteService {
         const notes = this.loadNotesFromStore() ?? [];
         const ix = notes.findIndex(n => n.noteId === note.noteId);
         if (~ix) {
-          notes[ix] = note;
+          notes[ix] = {...notes[ix], ...note};
         } else {
           notes.push(note);
         }

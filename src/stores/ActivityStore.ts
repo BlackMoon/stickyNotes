@@ -70,6 +70,6 @@ export abstract class DataActivityStore<T> extends ActivityStore implements Enti
 	
 	protected updateOneMutably(updated: T) {
 		const key = selectIdValue(updated, this.selectId);
-		this.entities[key] = updated;
+		this.entities[key] = {...this.entities[key], ...updated };
 	}
 }

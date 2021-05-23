@@ -3,5 +3,5 @@ export interface INote {
     noteText?: string;
     x?: number;
     y?: number;
-    zIndex?: number;
+    z?: number;
 }
