@@ -25,7 +25,6 @@ const NoteItem: FC<NoteItemProps> = (props) => {
       updateNote({...note, noteText});
       setModified(false);
     }
-    
   }
 
 	return (
