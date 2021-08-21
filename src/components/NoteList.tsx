@@ -18,12 +18,35 @@ const NoteList = () => {
     const y = parseInt(draggedEl.style.top, 10);
     let z = 1;
 
+    const draggedRect = draggedEl.getBoundingClientRect();
+
     const notes: Array<HTMLElement> = (ref.current as any).querySelectorAll('div.note-item');
     notes
       .forEach(n => {
         if (n !== draggedEl) {
           const rect = n.getBoundingClientRect();
-          if (rect.left <= x && rect.right >= x && rect.top <= y && rect.bottom >= y) {
+          if ((
+                rect.left <= draggedRect.left && 
+                rect.right >= draggedRect.left && 
+                rect.top <= draggedRect.top && 
+                rect.bottom >= draggedRect.top
+              ) || (
+                rect.left <= draggedRect.right && 
+                rect.right >= draggedRect.right && 
+                rect.top <= draggedRect.top && 
+                rect.bottom >= draggedRect.top
+              ) || (
+                rect.left <= draggedRect.left && 
+                rect.right >= draggedRect.left && 
+                rect.top <= draggedRect.bottom && 
+                rect.bottom >= draggedRect.bottom
+              ) || (
+                rect.left <= draggedRect.right && 
+                rect.right >= draggedRect.right && 
+                rect.top <= draggedRect.bottom && 
+                rect.bottom >= draggedRect.bottom
+              )
+            ) {
             z = Math.max(+n.style.zIndex, z) + 1;
           }
         }
@@ -36,7 +59,7 @@ const NoteList = () => {
 		<section 
       className="note-list full-width" 
       ref={ref}
-      onDragOver={e => { 
+      onDragOver={(e:any) => { 
           e.preventDefault();
           draggedEl!.style.left = `${e.clientX - 100}px`;
           draggedEl!.style.top = `${e.clientY - 100}px`;
@@ -48,7 +71,7 @@ const NoteList = () => {
 
           const noteId = e.dataTransfer.getData("text");
           const { x, y, z } = calculatePosition();
-          
+          draggedEl.style.zIndex = z;
           updateNote({ noteId, x, y, z });
           setDragging(false);
         }
