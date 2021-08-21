@@ -29,7 +29,7 @@ const NoteItem: FC<NoteItemProps> = (props) => {
 
 	return (
     <div className="note-item" 
-			contentEditable={!draggedEl}
+			contentEditable={ draggedEl !== ref.current }
 			data-attr={note.noteId}
 			draggable
 			style={{ left: note.x, top: note.y, zIndex: note.z }}
@@ -41,12 +41,14 @@ const NoteItem: FC<NoteItemProps> = (props) => {
         }
       }
       onDragStart={(e: any) => {
-          
+          const rect = (ref.current as any).getBoundingClientRect();
+          const offsetX = e.clientX - rect.left;
+          const offsetY = e.clientY - rect.top;
           updateNoteText(e);
           e.dataTransfer.setData("text", note.noteId);
           e.dataTransfer.setDragImage(new Image(), 0, 0);
           e.target.classList.add('drag-enter');
-          setDragging(e.target);
+          setDragging(e.target, offsetX, offsetY);
         }
       }
       onFocus={e => (ref.current as any).style.zIndex = FOCUSED_ZINDEX }

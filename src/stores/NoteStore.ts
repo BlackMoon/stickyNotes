@@ -16,6 +16,8 @@ class NoteStore extends DataActivityStore<INote> {
 	selectId = (n: INote) => n.noteId;
 
   @observable draggedEl: any;
+  @observable offsetX: number = 0;
+  @observable offsetY: number = 0;
 
 	constructor() {
 		super();
@@ -81,8 +83,10 @@ class NoteStore extends DataActivityStore<INote> {
 	});
 
   @action
-	setDragging = (draggedEl?: any) => {
+	setDragging = (draggedEl: any, offsetX: number = 0, offsetY: number = 0) => {
 		this.draggedEl = draggedEl;
+    this.offsetX = offsetX;
+    this.offsetY = offsetY;
 	}
 
 }

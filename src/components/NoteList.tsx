@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import React from "react";
 
@@ -10,15 +10,15 @@ import "./NoteList.css";
 
 const NoteList = () => {
   
-	const { allEntities, draggedEl, setDragging, updateNote } = useContext(NoteStore);
+	const { allEntities, draggedEl, offsetX, offsetY, setDragging, updateNote } = useContext(NoteStore);
 
 	return (
 		<section 
       className="note-list full-width" 
       onDragOver={(e:any) => { 
           e.preventDefault();
-          draggedEl!.style.left = `${e.clientX - 100}px`;
-          draggedEl!.style.top = `${e.clientY - 100}px`;
+          draggedEl!.style.left = `${e.clientX - offsetX}px`;
+          draggedEl!.style.top = `${e.clientY - offsetY}px`;
         }
       }
       onDrop={(e: any) => {

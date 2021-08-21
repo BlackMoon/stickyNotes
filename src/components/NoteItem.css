@@ -3,10 +3,10 @@
     border: 1px solid limegreen;
     border-radius: 8px;
     margin: 0 10px 10px 0;
-    height: 200px;
-    min-width: 200px;
-    max-width: 200px;
+    height: 180px;
+    width: 220px;
     position: absolute;
+    padding: 10px;
 }
 
 .note-item.drag-enter {
@@ -16,5 +16,6 @@
 @media (max-width: 992px) {
     .note-item {
         height: 140px;
+        width: 180px;
     }
 }
