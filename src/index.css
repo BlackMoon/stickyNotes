@@ -1,7 +1,11 @@
 #root {
   min-height: 100vh;
   display: flex;
-  padding: 10px 0;
+}
+
+.container {
+  justify-content: space-between;
+  padding: 10px 15px;
 }
 
 .flex {
@@ -9,3 +13,4 @@
   flex: 1;
   flex-direction: column;
 }
+

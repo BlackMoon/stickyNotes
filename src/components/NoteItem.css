@@ -1,5 +1,5 @@
 .note-item {
-    background-color: palegreen;
+    background-color:rgba(152, 251, 152, 0.25);
     border: 1px solid limegreen;
     border-radius: 8px;
     margin: 0 10px 10px 0;
@@ -7,6 +7,7 @@
     min-width: 200px;
     max-width: 200px;
     position: absolute;
+    opacity: 0.5;
 }
 
 .note-item.drag-enter {

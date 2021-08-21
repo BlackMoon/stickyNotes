@@ -1,13 +1,15 @@
 .remove-area {
-    align-items: center;
-    border: 1px dotted #666;
-    border-radius: 8px;
-    display: flex;;
-    flex-basis: 120px;
-    flex-shrink: 0;
-    justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px dotted #666;
+  display: flex;;
+  height: 80px;
+  flex-basis: 120px;
+  flex-shrink: 0;
+  justify-content: center;
+  z-index: 999;
 }
 
 .remove-area.drag-enter {
-    border-width: 2px;
+  border-width: 2px;
 }

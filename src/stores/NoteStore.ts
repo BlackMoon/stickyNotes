@@ -4,18 +4,18 @@ import { createContext } from 'react';
 import { INote, } from '../models';
 import { noteService } from '../services';
 
-
 import { DataActivityStore } from './ActivityStore';
 
 const NEW_NOTE_TEXT = 'new note';
+const NEW_NOTE_X = 200;
+const NEW_NOTE_Y = 200;
+const NEW_NOTE_Z = 20;
 
 class NoteStore extends DataActivityStore<INote> {
 	
 	selectId = (n: INote) => n.noteId;
 
-	@observable draggedEl: any;
-	@observable dragging: boolean = false;
-	@observable dropped: boolean = false;
+  @observable draggedEl: any;
 
 	constructor() {
 		super();
@@ -25,14 +25,13 @@ class NoteStore extends DataActivityStore<INote> {
 		this.removeNote = this.removeNote.bind(this);
 		this.updateNote = this.updateNote.bind(this);
 
-		this.setDragging = this.setDragging.bind(this);
-		this.setDropped = this.setDropped.bind(this);
+    this.setDragging = this.setDragging.bind(this);
 	}
 
 	addNote = flow(function* (this: NoteStore, note?: INote) {
 		this.loading = true;
 		try {
-			const newNote = {...note, noteId: '', noteText: NEW_NOTE_TEXT};
+			const newNote = {...note, noteId: '', x: NEW_NOTE_X, y: NEW_NOTE_Y, z: NEW_NOTE_Z, noteText: NEW_NOTE_TEXT};
 			const noteId = yield noteService.add(newNote);
 			this.addOneMutably({...newNote, noteId });
 		} catch (ex) {
@@ -73,27 +72,19 @@ class NoteStore extends DataActivityStore<INote> {
 	updateNote = flow(function* (this: NoteStore, note: INote) {
 		this.loading = true;
 		try {
-			yield noteService.update(note);
+      yield noteService.update(note);
 			this.updateOneMutably(note);
 		} catch (ex) {
 			this.error = ex;
 		}
-		this.loading = false;
+    this.loading = false;
 	});
 
-	@action
-	setDragging = (dragging: boolean, draggedEl?: any) => {
+  @action
+	setDragging = (draggedEl?: any) => {
 		this.draggedEl = draggedEl;
-		this.dragging = dragging;
-		if (dragging) {
-			this.dropped = false;
-		}
 	}
 
-	@action
-	setDropped = (dropped: boolean) => {
-		this.dropped = dropped;
-	}
 }
 
 export default createContext(new NoteStore());
