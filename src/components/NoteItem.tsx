@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useRef, useState } from "react";
+import { useCallback } from "react";
 import { FC } from "react";
 
 import { INote } from "../models";
@@ -19,22 +20,22 @@ const NoteItem: FC<NoteItemProps> = (props) => {
 	const [modified, setModified] = useState(false);
   const ref = useRef(null);
 
-  const updateNoteText = (e: any) => {
+  const updateNoteText = useCallback((e: any) => {
     if (modified) {
       const noteText = e.target.innerText;
       updateNote({...note, noteText});
       setModified(false);
     }
-  }
+  }, [modified, note, updateNote]);
 
 	return (
     <div className="note-item" 
 			contentEditable={ draggedEl !== ref.current }
 			data-attr={note.noteId}
 			draggable
+      ref={ref}
 			style={{ left: note.x, top: note.y, zIndex: note.z }}
 			suppressContentEditableWarning
-      ref={ref}
 			onBlur={e => {
           (ref.current as any).style.zIndex = note.z;
           updateNoteText(e);
