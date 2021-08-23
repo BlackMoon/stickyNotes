@@ -3,22 +3,15 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-input AddNoteInput {
-  noteText: String!
-  x: Float
-  y: Float
-  z: Float
-}
-
 type Mutation {
-  addNode(note: AddNoteInput!): String!
+  addNote: Note!
   deleteNode(note: NoteInput!): Boolean!
   updateNode(note: NoteInput!): Boolean!
 }
 
 type Note {
   noteId: String!
-  noteText: String!
+  noteText: String
   x: Float
   y: Float
   z: Float
@@ -26,12 +19,12 @@ type Note {
 
 input NoteInput {
   noteId: String!
-  noteText: String!
+  noteText: String
   x: Float
   y: Float
   z: Float
 }
 
 type Query {
-  getNotes: [Note!]
+  notes: [Note!]
 }

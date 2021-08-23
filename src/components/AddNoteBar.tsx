@@ -10,7 +10,7 @@ const AddNoteBar = () => {
 
   useEffect(() => {
 		(async () => loadNotes())();
-	});
+	}, [loadNotes]);
 
   return (
     <div className="toolbar">

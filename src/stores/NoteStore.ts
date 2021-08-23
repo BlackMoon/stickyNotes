@@ -6,11 +6,6 @@ import { noteService } from '../services';
 
 import { DataActivityStore } from './ActivityStore';
 
-const NEW_NOTE_TEXT = 'new note';
-const NEW_NOTE_X = 200;
-const NEW_NOTE_Y = 200;
-const NEW_NOTE_Z = 20;
-
 class NoteStore extends DataActivityStore<INote> {
 	
 	selectId = (n: INote) => n.noteId;
@@ -30,12 +25,11 @@ class NoteStore extends DataActivityStore<INote> {
     this.setDragging = this.setDragging.bind(this);
 	}
 
-	addNote = flow(function* (this: NoteStore, note?: INote) {
+	addNote = flow(function* (this: NoteStore,) {
 		this.loading = true;
 		try {
-			const newNote = {...note, noteId: '', x: NEW_NOTE_X, y: NEW_NOTE_Y, z: NEW_NOTE_Z, noteText: NEW_NOTE_TEXT};
-			const noteId = yield noteService.add(newNote);
-			this.addOneMutably({...newNote, noteId });
+			const note = yield noteService.add();
+			this.addOneMutably(note);
 		} catch (ex) {
 			this.error = ex;
 		}

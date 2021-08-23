@@ -37,7 +37,7 @@ const calculatePosition = (draggedEl: HTMLElement) => {
       }
   });
 
-  return {x, y, z};
+  return {x, y, z };
 }
 
 export default calculatePosition;
