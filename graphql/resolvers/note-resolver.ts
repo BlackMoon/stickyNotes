@@ -12,9 +12,16 @@ const NOTES_FILE = 'notes.json';
 @Resolver((of) => Note)
 export class NoteResolver {
 
+  private loaded = false;
+  private internalNotes: Note[] = [];
+
   @Query((returns) => [Note], { nullable: true })
   async notes(): Promise<Note[]> {
-    return await this.loadNotes();
+    if (!this.loaded){
+      this.internalNotes = await this.loadNotes();
+      this.loaded = true;
+    }
+    return this.internalNotes;
   }
 
   @Mutation((returns) => Note)
