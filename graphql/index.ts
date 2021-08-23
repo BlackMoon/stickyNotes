@@ -17,7 +17,7 @@ async function main() {
   
   const app = express();
   app.use(cors());
-  app.get('/', (req, resp) => resp.send('use /graphql endpoint'))
+  app.get('/', (_, resp) => resp.redirect('/graphql'))
 
   const appolloServer = new ApolloServer({
     schema,

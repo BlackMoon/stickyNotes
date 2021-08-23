@@ -49,7 +49,6 @@ export class NoteResolver {
 
   @Mutation((returns) => Boolean)
   async updateNode(@Arg('note') note: Note): Promise<boolean> {
-    
     const notes = await this.notes(); 
     const ix = notes.findIndex((n: Note) => n.noteId === note.noteId); 
     if (~ix) {
