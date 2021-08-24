@@ -21,6 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-graphql/dist/
-graphql/node_modules/
-graphql/notes.json
+server/dist/
+server/node_modules/
+server/notes.json
+
