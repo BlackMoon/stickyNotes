@@ -1,7 +1,6 @@
 import axios from "axios";
 import { INote } from "../models";
-
-const ENDPOINT = 'http://localhost:8000/graphql';
+import { ENDPOINT } from "./config";
 
 export class NoteService {
 
@@ -40,7 +39,7 @@ export class NoteService {
   }
 
   async getAll(): Promise<INote[]> {
-
+    
     const NOTES_QUERY = `
       query {
         notes {
@@ -51,14 +50,14 @@ export class NoteService {
           z
         }
       }`;
-
+      
     const data = await axios.post(
       ENDPOINT, 
       { query: NOTES_QUERY },
       { headers: { 'Content-Type': 'application/json' } },
     )
     .then(resp => resp.data);
-
+    
     return data.data.notes as INote[];
 	}
 

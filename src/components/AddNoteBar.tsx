@@ -1,12 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import NoteStore from '../stores/NoteStore';
+import { NoteStore } from '../stores/NoteStore';
 import "./AddNoteBar.css";
+import { withStore } from "../stores/StoreProvider";
 
-const AddNoteBar = () => {
-  const noteStore = useContext(NoteStore);
-	const { addNote, loadNotes, loading, error } = noteStore;
+const AddNoteBar = ({ store }: { store: NoteStore }) => {
+	const { addNote, loadNotes, loading, error } = store;
 
   useEffect(() => {
 		(async () => loadNotes())();
@@ -20,4 +20,4 @@ const AddNoteBar = () => {
   )
 }
 
-export default observer(AddNoteBar);
+export default withStore(observer(AddNoteBar));

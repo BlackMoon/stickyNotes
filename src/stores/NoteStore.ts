@@ -1,12 +1,11 @@
 import { action, flow, observable } from 'mobx';
-import { createContext } from 'react';
 
 import { INote, } from '../models';
 import { noteService } from '../services';
 
 import { DataActivityStore } from './ActivityStore';
 
-class NoteStore extends DataActivityStore<INote> {
+export class NoteStore extends DataActivityStore<INote> {
 	
 	selectId = (n: INote) => n.noteId;
 
@@ -45,11 +44,11 @@ class NoteStore extends DataActivityStore<INote> {
 		if (this.dataLoaded) {
 			return;
 		}
-
+    
 		this.loading = true;
 
 		try {
-			const notes: INote[] = yield noteService.getAll();
+			const notes: INote[] = yield noteService.getAll(); 
 			this.setManyMutably(notes);
 			this.dataLoaded = true;	
 		} catch (ex) {
@@ -89,5 +88,3 @@ class NoteStore extends DataActivityStore<INote> {
 	}
 
 }
-
-export default createContext(new NoteStore());

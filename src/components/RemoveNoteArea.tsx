@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 
-import NoteStore from '../stores/NoteStore';
+import { NoteStore } from '../stores/NoteStore';
+import { withStore } from "../stores/StoreProvider";
 
 import "./RemoveNoteArea.css";
 import calculatePosition from "./calculate-position";
@@ -16,8 +17,8 @@ const dragLeave = (e: any) => {
   e.target.classList.remove('drag-enter');
 }
 
-const RemoveNoteArea = () => {
-	const { draggedEl, updateNote, removeNote, setDragging } = useContext(NoteStore);;
+const RemoveNoteArea = ({ store }: { store: NoteStore }) => {
+	const { draggedEl, updateNote, removeNote, setDragging } = store;
 
   const drop = (e: any) => {
     e.preventDefault();
@@ -49,4 +50,4 @@ const RemoveNoteArea = () => {
   );
 }
 
-export default observer(RemoveNoteArea);
+export default withStore(observer(RemoveNoteArea));

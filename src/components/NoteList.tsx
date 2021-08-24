@@ -1,17 +1,17 @@
-import { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import React from "react";
 
-import NoteStore from '../stores/NoteStore';
+import { NoteStore } from '../stores/NoteStore';
 import NoteItem from "./NoteItem";
 import calculatePosition from "./calculate-position";
 
 import "./NoteList.css";
+import { withStore } from "../stores/StoreProvider";
 
-const NoteList = () => {
+const NoteList = ({ store }: { store: NoteStore })  => {
   
-	const { allEntities, draggedEl, offsetX, offsetY, setDragging, updateNote } = useContext(NoteStore);
-
+	const { allEntities, draggedEl, offsetX, offsetY, setDragging, updateNote } = store;
+  
 	return (
 		<section 
       className="note-list full-width" 
@@ -33,9 +33,9 @@ const NoteList = () => {
         }
       }
 		>
-		  {allEntities.map(n => <NoteItem key={n.noteId} note={n} ></NoteItem>)}
+		  {allEntities.map(n => <NoteItem key={n.noteId} note={n} data-testid={n.noteId}></NoteItem>)}
 		</section>
 	);
 }
 
-export default observer(NoteList);
+export default withStore(observer(NoteList));

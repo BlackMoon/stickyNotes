@@ -1,22 +1,23 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useCallback } from "react";
 import { FC } from "react";
 
 import { INote } from "../models";
-import NoteStore from "../stores/NoteStore";
+import { NoteStore } from "../stores/NoteStore";
+import { withStore } from "../stores/StoreProvider";
 import './NoteItem.css';
 
 const FOCUSED_ZINDEX = 100;
 
 interface NoteItemProps {
 	note: INote;
+  store: NoteStore
 }
 
-const NoteItem: FC<NoteItemProps> = (props) => {
-	const  { note } = props;
+const NoteItem: FC<NoteItemProps> = ({ note, store }) => {
 	
-	const { updateNote, draggedEl, setDragging } = useContext(NoteStore);
+	const { updateNote, draggedEl, setDragging } = store;
 	const [modified, setModified] = useState(false);
   const ref = useRef(null);
 
@@ -60,4 +61,4 @@ const NoteItem: FC<NoteItemProps> = (props) => {
 	); 
 }
 
-export default observer(NoteItem);
+export default withStore(observer(NoteItem));
