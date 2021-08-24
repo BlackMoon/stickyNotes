@@ -6,7 +6,7 @@ import "./AddNoteBar.css";
 
 const AddNoteBar = () => {
   const noteStore = useContext(NoteStore);
-	const { addNote, loadNotes, loading } = noteStore;
+	const { addNote, loadNotes, loading, error } = noteStore;
 
   useEffect(() => {
 		(async () => loadNotes())();
@@ -15,7 +15,7 @@ const AddNoteBar = () => {
   return (
     <div className="toolbar">
       <a href="#/" className="primary-link" onClick={_ => addNote()}>Add note</a>
-			{loading ? (<span>Processing...</span>) : null}
+			{loading ? (<span>Processing...</span>) : (error ? '' + error : null) }
 		</div>
   )
 }

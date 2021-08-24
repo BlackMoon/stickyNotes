@@ -16,17 +16,22 @@ class NoteStore extends DataActivityStore<INote> {
 
 	constructor() {
 		super();
-		
-		this.addNote = this.addNote.bind(this);
-		this.loadNotes = this.loadNotes.bind(this);
-		this.removeNote = this.removeNote.bind(this);
-		this.updateNote = this.updateNote.bind(this);
 
-    this.setDragging = this.setDragging.bind(this);
+    const obj = this as { [key: string]: any };
+  
+    ['addNote', 'loadNotes', 'removeNote', 'updateNote', 'setDragging']
+      .forEach(f => {
+        const fn = obj[f].bind(this);
+        obj[f] = (...args: any) => { 
+          this.error = undefined; 
+          fn(...args);
+        }
+      }
+    );
 	}
 
 	addNote = flow(function* (this: NoteStore,) {
-		this.loading = true;
+    this.loading = true;
 		try {
 			const note = yield noteService.add();
 			this.addOneMutably(note);

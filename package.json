@@ -6,7 +6,7 @@
     "server": "node server.ts",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage",
+    "test": "react-scripts test --coverage --verbose",
     "eject": "react-scripts eject"
   },
   "dependencies": {
