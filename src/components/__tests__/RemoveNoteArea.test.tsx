@@ -1,14 +1,16 @@
 import { act, fireEvent, render, RenderResult, screen } from "@testing-library/react";
 import '@testing-library/jest-dom/extend-expect';
+
 import { server } from "../../services/setup-mock-server";
 import { NoteStore } from "../../stores/NoteStore";
-import { NoteList } from "../NoteList";
+import { RemoveNoteArea } from "../RemoveNoteArea";
 import * as calculatePosition from "../calculate-position";
 
 jest.mock('../../services/config', () => ({ ENDPOINT: 'http://localhost/graphql' }));
 
-describe('NoteList', () => {
 
+
+describe('RemoveNoteArea', () => {
   const store = new NoteStore();
   let wrapper: RenderResult;
 
@@ -21,28 +23,26 @@ describe('NoteList', () => {
   beforeEach(() => jest.resetAllMocks())
 
   test('renders without crashing', () => {
-    wrapper = render(<NoteList store={store}/>);
+    wrapper = render(<RemoveNoteArea store={store}/>);
     const { container } = wrapper;
     expect(container.firstChild).toBeTruthy();
-    expect(container.querySelector('section.note-list')).toBeInTheDocument();
+    expect(container.querySelector('div.remove-area')).toBeInTheDocument();
   })
 
-  test('render notes', async () => {
-    await store.loadNotes();
-    const { container } = render(<NoteList store={store}/>);
+  test('drag over && drag leave && drop', async () => {
+    window.confirm = jest.fn()
+      .mockReturnValueOnce(true)
+      .mockReturnValueOnce(false);
 
-    const noteEls = container.querySelectorAll('div.note-item');
-    expect(noteEls.length).toEqual(2);
-  })
-
-  test('drag over && drop', async () => {
+    const spyRemoveNote = jest.spyOn(store, 'removeNote');
     const spyUpdateNote = jest.spyOn(store, 'updateNote');
+
     // @ts-ignore
     calculatePosition.default = jest.fn(() => ({ x: 1, y: 2, z: 3}));
     await store.loadNotes();
-
-    const { container } = render(<NoteList store={store}/>);
-    const sectionEl = container.querySelector('section.note-list');
+    
+    const { container } = render(<RemoveNoteArea store={store}/>);
+    const divEl = container.querySelector('div.remove-area');
 
     const draggedEl = { 
       classList: { remove: () => {} },
@@ -53,10 +53,21 @@ describe('NoteList', () => {
     act(() => {
       store.setDragging(draggedEl, 10);
     });
-    fireEvent.dragOver(sectionEl!);
-    
-    fireEvent.drop(sectionEl!, { dataTransfer: { getData: () => 'noteId' } });
+    fireEvent.dragOver(divEl!);
 
+    fireEvent.dragLeave(divEl!);
+    
+    fireEvent.drop(divEl!, { dataTransfer: { getData: () => 'noteId' } });
+
+    // second drop for testing window.confirm === false case
+    act(() => {
+      store.setDragging(draggedEl, 10);
+    });
+
+    fireEvent.drop(divEl!, { dataTransfer: { getData: () => 'noteId' } });
+
+    expect(spyRemoveNote).toBeCalledTimes(1);
     expect(spyUpdateNote).toBeCalledTimes(1);
   })
-});
+
+})

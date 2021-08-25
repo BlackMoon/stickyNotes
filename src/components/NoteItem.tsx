@@ -29,7 +29,7 @@ export const NoteItem: FC<NoteItemProps> = observer(
       setModified(false);
     }
   }, [modified, note, updateNote]);
-
+  
 	return (
     <div className="note-item" 
 			contentEditable={ draggedEl !== ref.current }
