@@ -1,4 +1,4 @@
-import { computed, observable, reaction } from 'mobx';
+import { computed, observable } from 'mobx';
 import { Comparer, Dictionary, IdSelector, selectIdValue } from '../shared';
 
 export interface EntityState<T> {
@@ -23,10 +23,6 @@ export abstract class DataActivityStore<T> extends ActivityStore implements Enti
 
 	constructor() {
 		super();
-		reaction(
-			() => this.loading,
-			_ => console.log(this.loading)
-		  );
 	}
 
 	@computed get allEntities() {

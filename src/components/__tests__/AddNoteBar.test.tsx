@@ -1,27 +1,13 @@
 import { fireEvent, render, RenderResult, waitFor } from "@testing-library/react";
-import { rest } from "msw";
-import { setupServer } from 'msw/node'
-import { act } from "react-dom/test-utils";
-import { INote } from "../../models";
+
 import * as Services from "../../services";
+import { server } from "../../services";
 
 import AddNoteBar from "../AddNoteBar";
 import NoteList from "../NoteList";
 
 jest.mock('../../services/config', () => ({ ENDPOINT: 'http://localhost/graphql' }));
 
-const PATH = '/graphql';
-
-const notes: INote[] = [
-  { noteId: 'fakeId1', noteText: 'fakeText1'}, 
-  { noteId: 'fakeId2', noteText: 'fakeText2'}
-];
-
-const server = setupServer(
-  rest.post(PATH, (req, res, ctx) => {
-    return res(ctx.json(notes));
-  }),
-)
 
 jest.mock('../../services', () => ({ noteService: { getAll: jest.fn().mockReturnValue(notes) } }));
 

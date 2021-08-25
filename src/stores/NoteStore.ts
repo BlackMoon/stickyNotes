@@ -23,13 +23,14 @@ export class NoteStore extends DataActivityStore<INote> {
         const fn = obj[f].bind(this);
         obj[f] = (...args: any) => { 
           this.error = undefined; 
-          fn(...args);
+          return fn(...args);
         }
       }
     );
 	}
 
-	addNote = flow(function* (this: NoteStore,) {
+	addNote = flow(function* (this: NoteStore) {
+    
     this.loading = true;
 		try {
 			const note = yield noteService.add();
