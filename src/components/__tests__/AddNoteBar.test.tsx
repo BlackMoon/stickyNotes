@@ -1,71 +1,56 @@
 import { fireEvent, render, RenderResult, waitFor } from "@testing-library/react";
+import '@testing-library/jest-dom/extend-expect';
+import { server } from "../../services/setup-mock-server";
+import { NoteStore } from "../../stores/NoteStore";
 
-import * as Services from "../../services";
-import { server } from "../../services";
-
-import AddNoteBar from "../AddNoteBar";
-import NoteList from "../NoteList";
+import { AddNoteBar } from "../AddNoteBar";
 
 jest.mock('../../services/config', () => ({ ENDPOINT: 'http://localhost/graphql' }));
 
-
-jest.mock('../../services', () => ({ noteService: { getAll: jest.fn().mockReturnValue(notes) } }));
-
 describe('AddNoteBar', () => {
   
+  const store = new NoteStore();
+  let wrapper: RenderResult;
+
   afterAll(() => server.close())
 
   afterEach(() => server.resetHandlers())
 
   beforeAll(() => server.listen())
 
-  test('load notes API', async () => {
+  beforeEach(() => jest.resetAllMocks())
 
-    render(<AddNoteBar/>);
-  
-    expect(Services.noteService.getAll).toHaveBeenCalledTimes(1);
-    
-   
-    //const notelist = render(<NoteList/>);
-    // const noteEls = notelist.container.querySelectorAll('div.note-item');
-    // expect(noteEls.length).toEqual(2);
-    const { getByTestId } = render(<NoteList/>);
-
-    await waitFor (async () => {
-      console.log(getByTestId('fakeId1'));
-      // console.log(notelist.container.children);
-      // const noteEls = notelist.container.querySelectorAll('div.note-item');
-      // console.log(noteEls);
-    //   // expect(noteEls.length).toEqual(2);
-    //   // expect(spyGetAll).toBeCalled();
-    })
-
-   
-
+  test('renders without crashes', async () => {
+    wrapper = render(<AddNoteBar store={store}/>)
+    expect(wrapper.container.firstChild).toBeTruthy();
+    expect(wrapper.queryByText(/Add Note/i)).toBeInTheDocument();
   })
 
-  xtest('Add new note', async () => {
+  test('load notes API', async () => {
+
+    const spyLoadNotes = jest.spyOn(store, 'loadNotes');
+
+    wrapper = render(<AddNoteBar store={store}/>);
+
+    await waitFor(() => expect(wrapper.getByText(/Processing/)).toBeInTheDocument()) 
+
+    expect(spyLoadNotes).toHaveBeenCalledTimes(1);
+  })
+
+  test('Add new note', async () => {
+    const spyAddNote = jest.spyOn(store, 'addNote');
+    wrapper = render(<AddNoteBar store={store}/>);
     
-    const { container, getByText } = render(<AddNoteBar/>);
-    
-    expect(container.children.length).toBeGreaterThan(0);
-    
+    const { getByText } = wrapper; 
+
     const buttonEl = getByText(/Add Note/i);
-    expect(buttonEl).toBeTruthy();
-
+    expect(buttonEl).toBeInTheDocument()
+    
     fireEvent.click(buttonEl);
-
-    await waitFor(async () => {
-      const noteEl = getByText(/Processing/i);
-      expect(noteEl).toBeTruthy();
-    })
     
-    // const container = render(<NoteList />);
+    expect(spyAddNote).toHaveBeenCalledTimes(1);
 
-    // await waitFor(async () => {
-    //   const noteEl = container.getByText(/new note/i)
-    //   expect(noteEl).toBeTruthy();
-    // })
-    
+    const processingSpan = getByText(/Processing/i);
+    expect(processingSpan).toBeInTheDocument();
   })
 });

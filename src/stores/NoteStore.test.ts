@@ -22,7 +22,7 @@ describe('NoteStore', () => {
     expect(store.ids.length).toEqual(2);
     expect(Object.keys(store.entities).length).toEqual(2);
     
-    // trye reload
+    // try to reload
     await store.loadNotes();
   })
 
@@ -153,13 +153,14 @@ describe('NoteStore', () => {
 
   test('setDragginh', () => {
     const store = new NoteStore();
-    store.setDragging({ tag: 'div'}, 20, 40);
+    
+    store.setDragging({ tag: 'div'});
 
     const { draggedEl, offsetX, offsetY } = store;
 
     expect(draggedEl).toBeDefined();
     expect(draggedEl.tag).toEqual('div');
-    expect(offsetX).toEqual(20);
-    expect(offsetY).toEqual(40);
+    expect(offsetX).toEqual(0);
+    expect(offsetY).toEqual(0);
   })
 })

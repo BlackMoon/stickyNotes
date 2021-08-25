@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { FC } from "react";
 
 import { NoteStore } from '../stores/NoteStore';
 import NoteItem from "./NoteItem";
@@ -8,10 +8,14 @@ import calculatePosition from "./calculate-position";
 import "./NoteList.css";
 import { withStore } from "../stores/StoreProvider";
 
-const NoteList = ({ store }: { store: NoteStore })  => {
+interface INoteListProps {
+  store: NoteStore
+}
+
+export const NoteList: FC<INoteListProps> = ({ store })  => {
   
 	const { allEntities, draggedEl, offsetX, offsetY, setDragging, updateNote } = store;
-  
+  console.log(333, allEntities);
 	return (
 		<section 
       className="note-list full-width" 

@@ -1,13 +1,17 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import { NoteStore } from '../stores/NoteStore';
-import "./AddNoteBar.css";
 import { withStore } from "../stores/StoreProvider";
+import "./AddNoteBar.css";
 
-const AddNoteBar = ({ store }: { store: NoteStore }) => {
+interface IAddNoteBarProps {
+  store: NoteStore
+}
+
+export const AddNoteBar: FC<IAddNoteBarProps> = ({ store }) => {
 	const { addNote, loadNotes, loading, error } = store;
-
+  
   useEffect(() => {
 		(async () => loadNotes())();
 	}, [loadNotes]);
