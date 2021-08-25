@@ -15,7 +15,8 @@ interface NoteItemProps {
   store: NoteStore
 }
 
-const NoteItem: FC<NoteItemProps> = ({ note, store }) => {
+export const NoteItem: FC<NoteItemProps> = observer(
+  ({ note, store }) => {
 	
 	const { updateNote, draggedEl, setDragging } = store;
 	const [modified, setModified] = useState(false);
@@ -59,6 +60,6 @@ const NoteItem: FC<NoteItemProps> = ({ note, store }) => {
 			{note.noteText}
 		</div>
 	); 
-}
+})
 
-export default withStore(observer(NoteItem));
+export default withStore(NoteItem);

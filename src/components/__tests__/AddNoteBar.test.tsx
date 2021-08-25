@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, RenderResult, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import { act, cleanup, fireEvent, getByText, render, RenderResult, screen, waitFor } from "@testing-library/react";
 import '@testing-library/jest-dom/extend-expect';
 import { server } from "../../services/setup-mock-server";
 import { NoteStore } from "../../stores/NoteStore";
@@ -32,9 +32,11 @@ describe('AddNoteBar', () => {
 
     wrapper = render(<AddNoteBar store={store}/>);
 
+    const { getByText } = wrapper;
+
     expect(spyLoadNotes).toHaveBeenCalledTimes(1);
 
-    const processingSpan = await screen.findByText(/Processing/i);
+    const processingSpan = getByText(/Processing/i);
     expect(processingSpan).toBeInTheDocument();
     await waitFor(() => expect(processingSpan).not.toBeInTheDocument()) 
 
@@ -59,7 +61,7 @@ describe('AddNoteBar', () => {
     
     expect(spyAddNote).toHaveBeenCalledTimes(1); 
 
-    const processingSpan = await screen.findByText(/Processing/i);
+    const processingSpan = getByText(/Processing/i);
     expect(processingSpan).toBeInTheDocument();
     await waitFor(() => expect(processingSpan).not.toBeInTheDocument()) 
 

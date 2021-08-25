@@ -16,7 +16,7 @@ export const AddNoteBar: FC<IAddNoteBarProps> = observer(
     useEffect(() => {
       (async () => loadNotes())();
     }, [loadNotes]);
-    console.log(12345, loading);
+    
     return (
       <div className="toolbar">
         <a href="#/" className="primary-link" onClick={_ => addNote()}>Add note</a>

@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 
 import { NoteStore } from '../stores/NoteStore';
-import NoteItem from "./NoteItem";
+import { NoteItem } from "./NoteItem";
 import calculatePosition from "./calculate-position";
 
 import "./NoteList.css";
@@ -12,34 +12,36 @@ interface INoteListProps {
   store: NoteStore
 }
 
-export const NoteList: FC<INoteListProps> = ({ store })  => {
+export const NoteList: FC<INoteListProps> = observer(
+  ({ store })  => {
   
-	const { allEntities, draggedEl, offsetX, offsetY, setDragging, updateNote } = store;
-  console.log(333, allEntities);
-	return (
-		<section 
-      className="note-list full-width" 
-      onDragOver={(e:any) => { 
-          e.preventDefault();
-          draggedEl!.style.left = `${e.clientX - offsetX}px`;
-          draggedEl!.style.top = `${e.clientY - offsetY}px`;
+    const { allEntities, draggedEl, offsetX, offsetY, setDragging, updateNote } = store;
+    
+    return (
+      <section 
+        className="note-list full-width" 
+        onDragOver={(e:any) => { 
+            e.preventDefault();
+            draggedEl!.style.left = `${e.clientX - offsetX}px`;
+            draggedEl!.style.top = `${e.clientY - offsetY}px`;
+          }
         }
-      }
-      onDrop={(e: any) => {
-          e.preventDefault();
-          draggedEl.classList.remove('drag-enter');
+        onDrop={(e: any) => {
+            e.preventDefault();
+            draggedEl.classList.remove('drag-enter');
 
-          const noteId = e.dataTransfer.getData("text");
-          const { x, y, z } = calculatePosition(draggedEl);
-          draggedEl.style.zIndex = z;
-          updateNote({ noteId, x, y, z });
-          setDragging(false);
+            const noteId = e.dataTransfer.getData("text");
+            const { x, y, z } = calculatePosition(draggedEl);
+            draggedEl.style.zIndex = z;
+            updateNote({ noteId, x, y, z });
+            setDragging(false);
+          }
         }
-      }
-		>
-		  {allEntities.map(n => <NoteItem key={n.noteId} note={n} data-testid={n.noteId}></NoteItem>)}
-		</section>
-	);
-}
+      >
+        {allEntities.map(n => <NoteItem store={store} key={n.noteId} note={n} data-testid={n.noteId}></NoteItem>)}
+      </section>
+    );
+  }
+)
 
-export default withStore(observer(NoteList));
+export default withStore(NoteList);
