@@ -1,4 +1,4 @@
-import { fireEvent, render, RenderResult, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, RenderResult, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import '@testing-library/jest-dom/extend-expect';
 import { server } from "../../services/setup-mock-server";
 import { NoteStore } from "../../stores/NoteStore";
@@ -32,25 +32,38 @@ describe('AddNoteBar', () => {
 
     wrapper = render(<AddNoteBar store={store}/>);
 
-    await waitFor(() => expect(wrapper.getByText(/Processing/)).toBeInTheDocument()) 
-
     expect(spyLoadNotes).toHaveBeenCalledTimes(1);
+
+    const processingSpan = await screen.findByText(/Processing/i);
+    expect(processingSpan).toBeInTheDocument();
+    await waitFor(() => expect(processingSpan).not.toBeInTheDocument()) 
+
+    cleanup();
   })
 
   test('Add new note', async () => {
+
     const spyAddNote = jest.spyOn(store, 'addNote');
-    wrapper = render(<AddNoteBar store={store}/>);
+    jest.spyOn(store, 'loadNotes').mockReturnValue(Promise.resolve([]) as any)
     
+    wrapper = render(<AddNoteBar store={store}/>);
+   
     const { getByText } = wrapper; 
 
     const buttonEl = getByText(/Add Note/i);
-    expect(buttonEl).toBeInTheDocument()
+    expect(buttonEl).toBeInTheDocument();
     
-    fireEvent.click(buttonEl);
+    act(() => {
+      fireEvent.click(buttonEl);
+    })
     
-    expect(spyAddNote).toHaveBeenCalledTimes(1);
+    expect(spyAddNote).toHaveBeenCalledTimes(1); 
 
-    const processingSpan = getByText(/Processing/i);
+    const processingSpan = await screen.findByText(/Processing/i);
     expect(processingSpan).toBeInTheDocument();
+    await waitFor(() => expect(processingSpan).not.toBeInTheDocument()) 
+
+    cleanup();
+    
   })
 });
