@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, getByText, render, RenderResult, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, RenderResult, waitFor } from "@testing-library/react";
 import '@testing-library/jest-dom/extend-expect';
 import { server } from "../../services/setup-mock-server";
 import { NoteStore } from "../../stores/NoteStore";
