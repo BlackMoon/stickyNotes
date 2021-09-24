@@ -5,6 +5,7 @@
     "outDir": "./dist",                             
     "rootDir": "./",                             
     "strict": true,
+    "sourceMap": true,
     "moduleResolution": "node",
     "esModuleInterop": true,    
     "emitDecoratorMetadata": true,
