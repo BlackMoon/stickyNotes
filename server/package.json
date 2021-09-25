@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "nodemon index.ts",
+    "start:debug": "nodemon --inspect index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
